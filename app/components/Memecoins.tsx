@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 import gsap from "gsap";
 import Draggable from "gsap/Draggable";
@@ -9,32 +10,17 @@ gsap.registerPlugin(Draggable);
 
 function Memecoins() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const draggableRef = useRef<any>(null);
+  const draggableRef = useRef<ReturnType<typeof Draggable.create>[0] | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const cards = [
-    {
-      id: 1,
-      title: "Current Insiders",
-      value: 5,
-      change: "-80%",
-      type: "green",
-    },
-    {
-      id: 2,
-      title: "Init Insiders",
-      value: 16,
-      change: "+60%",
-      type: "red",
-    },
-    {
-      id: 3,
-      title: "Other Metric",
-      value: 11,
-      change: "-25%",
-      type: "green",
-    },
+    { id: 1, title: "Current Insiders", value: 5, change: "-80%", type: "green" },
+    { id: 2, title: "Init Insiders", value: 16, change: "+60%", type: "red" },
+    { id: 3, title: "Other Metric", value: 11, change: "-25%", type: "green" },
+    { id: 4, title: "Current Insiders", value: 5, change: "-80%", type: "green" },
+    { id: 5, title: "Init Insiders", value: 16, change: "+60%", type: "red" },
+    { id: 6, title: "Other Metric", value: 11, change: "-25%", type: "green" },
   ];
 
   useEffect(() => {
@@ -52,13 +38,13 @@ function Memecoins() {
       snap: (endValue) => {
         const index = Math.round(endValue / cardWidth);
         setActiveIndex(-index);
-        return Math.round(endValue / cardWidth) * cardWidth;
+        return index * cardWidth;
       },
     })[0];
 
     // Auto Slide
     intervalRef.current = setInterval(() => {
-      const currentX = draggableRef.current.x;
+      const currentX = draggableRef.current?.x || 0;
       const nextX = currentX - cardWidth;
 
       if (Math.abs(nextX) >= Math.abs(maxOffset)) {
@@ -66,7 +52,7 @@ function Memecoins() {
           x: 0,
           duration: 0.5,
           onUpdate: () => {
-            draggableRef.current.update();
+            draggableRef.current?.update();
             setActiveIndex(0);
           },
         });
@@ -76,7 +62,7 @@ function Memecoins() {
           x: nextX,
           duration: 0.5,
           onUpdate: () => {
-            draggableRef.current.update();
+            draggableRef.current?.update();
             setActiveIndex(nextIndex);
           },
         });
@@ -237,44 +223,57 @@ function Memecoins() {
                     alt=""
                     className="absolute z-10 w-full h-full"
                   />
-                  <main className="flex items-center absolute w-full overflow-hidden  justify-center  bg-black p-6">
-                    <div className="overflow-hidden w-full relative">
-                      <div
-                        ref={containerRef}
-                        className="flex gap-4 cursor-grab active:cursor-grabbing"
-                      >
-                        {cards.map((card, index) => (
-                          <div
-                            key={card.id}
-                            className={`w-[150px] h-[150px] rounded-xl text-white p-4 shadow-md flex-shrink-0 transition-all duration-300 relative
-        ${
-          index === activeIndex
-            ? "scale-105 border-4 border-green-400"
-            : "scale-100 border border-gray-700"
-        }
-        ${
-          card.type === "green"
-            ? "bg-gradient-to-b from-green-500 to-green-600"
-            : "bg-gradient-to-b from-red-500 to-red-600"
-        }
-      `}
-                          >
-                            <div className="flex items-center justify-between text-sm font-semibold mb-2">
-                              <span>{card.title}</span>
-                              <span className="opacity-70 text-xs">ⓘ</span>
-                            </div>
-                            <div className="text-3xl font-bold mt-4">
-                              {card.value}
-                            </div>
+                  <main className="flex items-center absolute w-full overflow-visible justify-center bg-black p-6">
+  <div className="overflow-hidden h-[190px] w-full relative">
+    <div
+      ref={containerRef}
+      className="flex gap-4 cursor-grab active:cursor-grabbing mt-5"
+    >
+      {cards.map((card, index) => {
+        const isActive = index === activeIndex;
 
-                            <div className="absolute bottom-3 right-3 text-xs bg-black/50 px-2 py-0.5 rounded-md">
-                              {card.change}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </main>
+        return (
+          <div
+            key={card.id}
+            className={`w-[150px] h-[150px] rounded-xl text-white pt-8 pb-8 px-6 flex-shrink-0 relative transition-all duration-300 ease-in-out
+              ${
+                card.type === "green"
+                  ? "bg-gradient-to-b from-green-500 to-green-600"
+                  : "bg-gradient-to-b from-red-500 to-red-600"
+              }
+              ${
+                isActive
+                  ? "scale-105 shadow-[0_0_20px_rgba(34,197,94,0.4)]"
+                  : "scale-100 border border-gray-700 shadow"
+              }
+            `}
+          >
+            {/* Camera-style corners */}
+            {isActive && (
+              <>
+                <span className="absolute top-0 left-0 w-4 h-4 m-[-10px] border-t-2 border-l-2 border-green-400" />
+                <span className="absolute top-0 right-0 w-4 h-4 m-[-10px]  border-t-2 border-r-2 border-green-400" />
+                <span className="absolute bottom-0 left-0 w-4 m-[-10px] h-4 border-b-2 border-l-2 border-green-400" />
+                <span className="absolute bottom-0 right-0 w-4 m-[-10px] h-4 border-b-2 border-r-2 border-green-400" />
+              </>
+            )}
+
+            {/* Content */}
+            <div className="flex items-center justify-between text-sm font-semibold mb-3">
+              <span>{card.title}</span>
+              <span className="opacity-70 text-xs">ⓘ</span>
+            </div>
+            <div className="text-3xl font-bold mt-6">{card.value}</div>
+            <div className="absolute bottom-3 right-3 text-xs bg-black/50 px-2 py-0.5 rounded-md">
+              {card.change}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</main>
+
                   <div className="relative top-65 px-3 z-20">
                     <div className="flex flex-col gap-5">
                       <div className="max-w-auto m-0">
@@ -292,11 +291,18 @@ function Memecoins() {
                   </div>
                 </div>
                 <div className="card border-[#282A2C] border card-bg relative max-w-[33.33%]">
-                  <img
-                    src="./asset/images/logo/iMockup - iphone 14.png"
-                    alt=""
-                    className="absolute top-[70px] left-35"
-                  />
+                <motion.img
+  src="./asset/images/logo/iMockup - iphone 14.png"
+  alt=""
+  className="absolute top-[70px] left-35"
+  animate={{ y: [0, -20, 0] }}
+  transition={{
+    duration: 2,
+    repeat: Infinity,
+    ease: "easeInOut",
+  }}
+/>
+
                   <img
                     src="./asset/images/logo/gradiant-overlay.png"
                     alt=""
@@ -398,7 +404,6 @@ function Memecoins() {
                       />
                     </svg>
                     <div className="text-gray-500">Find the Hidden Gem</div>
-               
                   </div>
                   <div className="flex items-center justify-center pl-[11px] flex-col gap-3">
                     <svg
@@ -414,7 +419,6 @@ function Memecoins() {
                       />
                     </svg>
                     <div className="text-gray-500">Analyze with Precision</div>
-                   
                   </div>
                   <div className="flex items-center justify-center flex-col gap-3 mr-[-17px]">
                     <svg
@@ -429,8 +433,9 @@ function Memecoins() {
                         fill="#4EDF00"
                       />
                     </svg>
-                    <div className="text-gray-500"> Take Action with Confidence</div>
-                  
+                    <div className="text-gray-500">
+                       Take Action with Confidence
+                    </div>
                   </div>
                 </div>
               </div>

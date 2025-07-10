@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import Image from "next/image";
 
-export default function divbar() {
+export default function Navbar() {
   const divRef = useRef(null);
   const logoRef = useRef(null);
   const mobileMenuRef = useRef(null);
-  const menuLinksRef = useRef<HTMLAnchorElement[]>([]);
+  const menuLinksRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [shouldRenderMenu, setShouldRenderMenu] = useState(false);
 
@@ -91,10 +91,12 @@ export default function divbar() {
     isMobileMenuOpen ? closeMobileMenu() : setShouldRenderMenu(true);
   };
 
+  // Removed unused setMenuLinkRef to fix lint error
+
   return (
     <header
       ref={divRef}
-      className="bg-black text-white w-full z-50 relative border-b  border-[#272727]"
+      className="sticky top-0 z-50 bg-black/100 backdrop-blur text-white w-full border-b border-[#272727]"
     >
       <div className="max-w-7xl mx-auto px-6 py-4 border-[#272727] border-l border-r flex items-center justify-between">
         {/* Logo */}
@@ -112,7 +114,7 @@ export default function divbar() {
           </div>
         </div>
 
-        {/* Desktop divigation */}
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-10 text-sm">
           <Link href="#">Price</Link>
           <Link href="#">FAQ</Link>
@@ -160,21 +162,25 @@ export default function divbar() {
             </button>
           </div>
 
-          {/* Mobile div Links */}
+          {/* Mobile Nav Links */}
           <div className="flex flex-col gap-5 text-sm">
-            {["Price", "FAQ", "Documentation", "Contact"].map((label, i) => (
-              <Link
-                key={i}
-                href="#"
-                className="py-2 border-b border-gray-700 flex justify-between items-center"
-                ref={(el) => {
-                  if (el) menuLinksRef.current[i] = el;
-                }}
-              >
-                {label}
-                <span className="text-white text-xl">→</span>
-              </Link>
-            ))}
+          {["Price", "FAQ", "Documentation", "Contact"].map((label, i) => (
+  <Link
+    key={i}
+    href="#"
+    className="py-2 border-b border-gray-700 flex justify-between items-center"
+    ref={(el) => {
+      if (el) {
+        menuLinksRef.current[i] = el;
+      }
+      return undefined;
+    }}
+  >
+    {label}
+    <span className="text-white text-xl">→</span>
+  </Link>
+))}
+
           </div>
 
           {/* Mobile Actions */}

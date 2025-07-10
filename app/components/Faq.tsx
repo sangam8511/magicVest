@@ -5,35 +5,37 @@ import { Plus, X } from "lucide-react";
 
 const faqs = [
     {
-      question: "How does Trendtrack work?",
-      answer: `It’s super simple. Once you sign up, you get access to an intuitive dashboard where you can:
-  
-  • Discover e-commerce stores that are performing well,  
-  • See their best-sellers, ads, apps, and themes,  
-  • Filter by niche, country, creation date, and more.  
-  
-  You can also save searches, follow specific stores, and spot product trends before others. Everything is designed to help you move fast and stay ahead.`,
+      question: "What exactly is MagicVest?",
+      answer: `MagicVest is an AI-powered crypto intelligence tool that predicts profitable token movements before they happen—and warns you about scams before you invest. It’s like having a data scientist, on-chain analyst, and risk manager in your pocket.`,
     },
     {
-      question: "Is there a free trial?",
-      answer: "Yes, we offer a 7-day free trial with full access to all features.",
+      question: "How does it predict pumps and token performance?",
+      answer: "MagicVest scans 250+ real-time signals across exchanges, social media, whale wallets, and smart contracts. It uses machine learning to spot trends, predict momentum, and deliver high-accuracy signals (up to 89% win rate on select altcoins).",
     },
     {
-      question: "How much does Trendtrack cost?",
-      answer: "Trendtrack offers pricing starting at $29/month. See our pricing page for details.",
+      question: "Can MagicVest really detect rug pulls?",
+      answer: "Yes. Our rug pull detection system analyzes smart contracts, dev wallet behavior, liquidity locks, bot volumes, and fake social metrics. It can flag dangerous tokens 2–48 hours before a collapse, helping you avoid traps before they happen.",
     },
     {
-      question: "How can I upgrade my membership?",
-      answer: "You can upgrade from your account dashboard under the billing section.",
+      question: "Do I need to connect my wallet or give trading access?",
+      answer: "No. MagicVest is 100% non-custodial. We don’t touch your funds or ask for exchange API keys unless you choose the autotrade option (Pro plan only). You stay in control at all times.",
     },
     {
-      question: "Can I request a refund on my membership?",
-      answer: "Yes, refunds are available within the first 14 days if you're not satisfied.",
+      question: "How do the signals work?",
+      answer: "You’ll receive real-time alerts via in-app dashboard. Each signal includes: Risk level (MagicScore™) Token safety analysis AI-generated pump predictio",
     },
     {
-      question: "Is Trendtrack suitable for beginners or small businesses?",
-      answer: "Absolutely. It's designed to help both beginners and pros spot trends and stay ahead.",
+      question: "What’s the MagicScore™?",
+      answer: "It’s our proprietary score based on 18+ critical factors (liquidity health, insider wallets, dev risk, volatility, sentiment, etc.). Green (61–100%) = Safe + Potential Orange (31–60%) = Caution Red (0–30%) = Risky ",
     },
+    {
+      question: "Does MagicVest work for any token?",
+      answer: "We scan all tokens listed on DEXs and CEXs. You can search manually or let our AI feed you the best ones through: Magic Radar (brand new gems with 61%+ score) AI Trending (high-volume tokens with strong growth) Magic Dip (accumulation plays ready to explode ",
+    },
+    {
+      question: "Where do I get alerts?",
+      answer: "You can receive signals through: MagicVest dashboard  Email notifications ",
+    }
   ];
 
 function Faq() {

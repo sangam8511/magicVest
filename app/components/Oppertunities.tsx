@@ -1,4 +1,6 @@
-import React from "react";
+'use client';
+import React, { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
@@ -8,11 +10,36 @@ const features = [
   "Gives clear buy/sell signals so you always know when to move",
 ];
 
-function Oppertunities() {
+const hideUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.17, 0.67, 0.83, 0.67],
+    },
+  },
+};
+
+function Opportunities() {
+  const headingRef = useRef(null);
+  const paragraphRef = useRef(null);
+  const featureRef = useRef(null);
+  const imageRef = useRef(null);
+
+  const isHeadingInView = useInView(headingRef, { once: true });
+  const isParagraphInView = useInView(paragraphRef, { once: true });
+  const isFeatureInView = useInView(featureRef, { once: true });
+  const isImageInView = useInView(imageRef, { once: true });
+
   return (
-    <div className="text-black  border-[#d7d6d6] border-b border-l border-r">
-      <div className="border-[#d7d6d6] border-l border-r pb-20 max-w-7xl mx-auto pt-10 pb-20 flex items-center flex-col justify-center px-6">
-        <div className="flex items-center w-[100%]">
+    <div className="text-black border-[#d7d6d6] border-b border-l border-r">
+      <div className="border-[#d7d6d6] border-l border-r max-w-7xl mx-auto pt-16 pb-24 flex flex-col justify-center px-4 sm:px-6 lg:px-8">
+        
+        {/* Top section with SVG and line */}
+        <div className="flex items-center w-full justify-center mb-12">
+          {/* SVG can stay unchanged */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="121"
@@ -55,14 +82,12 @@ function Oppertunities() {
                 width="109"
                 height="109"
                 filterUnits="userSpaceOnUse"
-                colorInterpolationFilters="sRGB"
               >
                 <feFlood floodOpacity="0" result="BackgroundImageFix" />
                 <feColorMatrix
                   in="SourceAlpha"
                   type="matrix"
                   values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                  result="hardAlpha"
                 />
                 <feOffset dy="4" />
                 <feGaussianBlur stdDeviation="13.5" />
@@ -71,17 +96,8 @@ function Oppertunities() {
                   type="matrix"
                   values="0 0 0 0 0.541176 0 0 0 0 0.992157 0 0 0 0 0.341176 0 0 0 0.26 0"
                 />
-                <feBlend
-                  mode="normal"
-                  in2="BackgroundImageFix"
-                  result="effect1_dropShadow_34821_595"
-                />
-                <feBlend
-                  mode="normal"
-                  in="SourceGraphic"
-                  in2="effect1_dropShadow_34821_595"
-                  result="shape"
-                />
+                <feBlend mode="normal" in2="BackgroundImageFix" />
+                <feBlend mode="normal" in="SourceGraphic" />
               </filter>
               <filter
                 id="filter1_dd_34821_595"
@@ -90,14 +106,12 @@ function Oppertunities() {
                 width="121"
                 height="121"
                 filterUnits="userSpaceOnUse"
-                colorInterpolationFilters="sRGB"
               >
                 <feFlood floodOpacity="0" result="BackgroundImageFix" />
                 <feColorMatrix
                   in="SourceAlpha"
                   type="matrix"
                   values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                  result="hardAlpha"
                 />
                 <feOffset dy="4" />
                 <feGaussianBlur stdDeviation="13.5" />
@@ -106,83 +120,85 @@ function Oppertunities() {
                   type="matrix"
                   values="0 0 0 0 0.541176 0 0 0 0 0.992157 0 0 0 0 0.341176 0 0 0 0.26 0"
                 />
-                <feBlend
-                  mode="normal"
-                  in2="BackgroundImageFix"
-                  result="effect1_dropShadow_34821_595"
-                />
-                <feColorMatrix
-                  in="SourceAlpha"
-                  type="matrix"
-                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                  result="hardAlpha"
-                />
-                <feOffset />
-                <feGaussianBlur stdDeviation="2" />
-                <feComposite in2="hardAlpha" operator="out" />
-                <feColorMatrix
-                  type="matrix"
-                  values="0 0 0 0 0.541176 0 0 0 0 0.992157 0 0 0 0 0.341176 0 0 0 0.43 0"
-                />
-                <feBlend
-                  mode="normal"
-                  in2="effect1_dropShadow_34821_595"
-                  result="effect2_dropShadow_34821_595"
-                />
-                <feBlend
-                  mode="normal"
-                  in="SourceGraphic"
-                  in2="effect2_dropShadow_34821_595"
-                  result="shape"
-                />
+                <feBlend mode="normal" in2="BackgroundImageFix" />
+                <feBlend mode="normal" in="SourceGraphic" />
               </filter>
             </defs>
           </svg>
-          <div className="line"></div>
         </div>
 
-        <div className="flex items-end">
-          <div className="w-[70%]">
-            <div className="text-[40px] font-semibold leading-tight w-[70%]">
+        {/* Main content section */}
+        <div className="flex flex-col lg:flex-row gap-10 items-start lg:items-end">
+          {/* Left side - Heading & paragraph */}
+          <div className="w-full lg:w-2/3 space-y-6">
+            <motion.h2
+              ref={headingRef}
+            
+              initial="hidden"
+              animate={isHeadingInView ? "visible" : "hidden"}
+              className="text-[28px] sm:text-[32px] lg:text-[40px] font-semibold leading-tight"
+            >
               Receive the best opportunities detected every day
-            </div>
-            <p className="w-[45%] text-[18px] mt-2 leading-normal">
+            </motion.h2>
+
+            <motion.p
+              ref={paragraphRef}
+            
+              initial="hidden"
+              animate={isParagraphInView ? "visible" : "hidden"}
+              className="text-base sm:text-lg lg:text-[18px] leading-relaxed text-gray-700"
+            >
               With 1000+ new tokens launching daily (90% scams), guessing right
               is impossible—until now. MagicVest AI spots moonshots early and
               detect rug pulls so you profit safely while others get wrecked.
               Join 15K+ traders winning without the stress! 🔥
-            </p>
+            </motion.p>
           </div>
-          <div className="w-[30%]">
-            <div className="space-y-4">
-              {features.map((text, index) => (
-                <div key={index} className="flex items-center space-x-3">
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    className="text-green-500 mt-1"
-                    size="lg"
-                  />
-                  <p className="text-gray-800 text-base text-[12px]">{text}</p>
-                </div>
-              ))}
-              <div>
-                <button className="px-6 py-3 bg-lime-400 text-black rounded-full text-sm font-semibold hover:bg-lime-300 transition">
-                  Scan Any Token
-                </button>
+
+          {/* Right side - Features */}
+          <motion.div
+            ref={featureRef}
+          
+            initial="hidden"
+            animate={isFeatureInView ? "visible" : "hidden"}
+            className="w-full lg:w-1/3 space-y-4"
+          >
+            {features.map((text, index) => (
+              <div key={index} className="flex items-center space-x-3">
+                <FontAwesomeIcon
+                  icon={faCheckCircle}
+                  className="text-green-500 mt-1"
+                  size="lg"
+                />
+                <p className="text-gray-800 text-sm sm:text-base">{text}</p>
               </div>
+            ))}
+
+            <div>
+              <button className="px-6 py-3 bg-lime-400 text-black rounded-full text-sm font-semibold hover:bg-lime-300 transition">
+                Scan Any Token
+              </button>
             </div>
-          </div>
+          </motion.div>
         </div>
-        <div className="mt-12">
+
+        {/* Bottom image */}
+        <motion.div
+          ref={imageRef}
+        
+          initial="hidden"
+          animate={isImageInView ? "visible" : "hidden"}
+          className="mt-12"
+        >
           <img
             src="/asset/images/logo/demo_img.png"
             alt="Dashboard"
-            className=""
+            className="w-full max-w-3xl mx-auto"
           />
-        </div>
+        </motion.div>
       </div>
     </div>
   );
 }
 
-export default Oppertunities;
+export default Opportunities;
